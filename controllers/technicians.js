@@ -187,3 +187,32 @@ exports.loginTechnician = async (req, res) => {
     });
   });
 };
+
+exports.technicianJobs = async (req,res) =>{
+  db.getConnection(function (err, connection) {
+  const technicianId = req.query.technicianId;
+
+  // Basic input validation
+  if (!technicianId || isNaN(technicianId)) {
+    return res.status(400).json({ error: 'Invalid technicianId' });
+  }
+
+  // Create the SQL query to fetch jobs and join with technician details
+  const query = `
+    SELECT jobs.*, technicians.name, technicians.email
+    FROM jobs
+    INNER JOIN technicians ON jobs.technician = technicians.id
+    WHERE jobs.technician = ?
+  `;
+
+  // Execute the query
+  db.query(query, [technicianId], (err, results) => {
+    if (err) {
+      console.error('Database error: ' + err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(results);
+    connection.release();
+  });
+})
+}
