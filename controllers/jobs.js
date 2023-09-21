@@ -16,10 +16,10 @@ exports.addJob = async (req, res) => {
     } = req.body;
 
     // Basic validation
-    if (!title || !apartment) {
+    if (!title || !apartment || !technician) {
       return res
         .status(400)
-        .json({ message: "Job Title and Apartment fields are required" });
+        .json({ message: "Job Title,Apartment and Technician fields are required" });
     }
 
     const insertQuery =
