@@ -290,7 +290,22 @@ exports.jobDetail = async (req, res) => {
   db.getConnection(function (err, connection) {
     const { id } = req.query;
     // SQL query to retrieve a job by its ID
-    const getJobByIdQuery = "SELECT * FROM jobs WHERE id = ?";
+
+    const getJobByIdQuery = 
+    `SELECT
+       jobs.*,
+       technicians.name AS technician_name, 
+       technicians.email AS technician_email, 
+       apartments.apartmentName AS apartment_name, 
+       apartments.location AS apartment_location
+    FROM
+      jobs
+    INNER JOIN
+      technicians ON jobs.technician = technicians.id
+    INNER JOIN
+      apartments ON jobs.apartment = apartments.id
+    WHERE
+      jobs.id = ?`;
 
     connection.query(getJobByIdQuery, [id], (err, results) => {
       if (err) {
