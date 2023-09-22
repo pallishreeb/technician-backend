@@ -272,7 +272,17 @@ exports.filterJobByDate = async (req, res) => {
     }
 
     // SQL query to retrieve jobs with a specific timeline date
-    const getJobsByDateQuery = "SELECT * FROM jobs WHERE timeline = ?";
+    const getJobsByDateQuery = `
+    SELECT  
+      jobs.*, 
+      technicians.name AS technician_name, 
+      technicians.email AS technician_email, 
+      apartments.apartmentName AS apartment_name, 
+      apartments.location AS apartment_location
+    FROM jobs
+    LEFT JOIN technicians ON jobs.technician = technicians.id
+    LEFT JOIN apartments ON jobs.apartment = apartments.id 
+    WHERE timeline = ?`;
 
     connection.query(getJobsByDateQuery, [date], (err, results) => {
       if (err) {
