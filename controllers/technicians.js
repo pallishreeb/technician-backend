@@ -216,3 +216,27 @@ exports.technicianJobs = async (req,res) =>{
   });
 })
 }
+
+exports.technicianTimelineDates = async (req, res) => {
+  db.getConnection(function (err, connection) {
+    const technicianId = req.query.technicianId;
+    // SQL query to select all distinct timeline dates
+    const getTimelineDatesQuery =
+      "SELECT DISTINCT timeline AS timelineDate FROM jobs WHERE jobs.technician = ?";
+
+    connection.query(getTimelineDatesQuery,[technicianId], (err, results) => {
+      if (err) {
+        console.error("Error fetching timeline dates: ", err);
+        return res
+          .status(500)
+          .json({ message: "Error fetching timeline dates" });
+      }
+
+      // Extract the timeline dates from the results
+      const timelineDates = results.map((row) => row.timelineDate);
+
+      res.status(200).json(timelineDates);
+      connection.release();
+    });
+  });
+};
