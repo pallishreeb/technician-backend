@@ -337,11 +337,17 @@ exports.jobDetail = async (req, res) => {
 
 exports.timelineDates = async (req, res) => {
   db.getConnection(function (err, connection) {
+    const {month , year} = req.query;
     // SQL query to select all distinct timeline dates
     const getTimelineDatesQuery =
-      "SELECT DISTINCT timeline AS timelineDate FROM jobs";
+      `SELECT DISTINCT timeline AS timelineDate 
+      FROM 
+        jobs 
+      WHERE
+        MONTH(STR_TO_DATE(timeline, '%d-%m-%Y')) = ?
+        AND YEAR(STR_TO_DATE(timeline, '%d-%m-%Y')) = ?`;
 
-    connection.query(getTimelineDatesQuery, (err, results) => {
+    connection.query(getTimelineDatesQuery,[month , year], (err, results) => {
       if (err) {
         console.error("Error fetching timeline dates: ", err);
         return res
