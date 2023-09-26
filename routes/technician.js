@@ -7,7 +7,7 @@ const {isAdmin, isAuthenticated} = require("../middleware")
 // Define  routes here
 router.post('/',isAdmin,addTechnician)
 router.post('/login',loginTechnician)
-router.get('/',isAdmin,getTechnicians)
+router.get('/',isAuthenticated,getTechnicians)
 router.get('/myjobs',isAuthenticated,technicianJobs)
 router.get('/mydates',isAuthenticated,technicianTimelineDates)
 router.put('/',isAdmin,updateTechnician)
