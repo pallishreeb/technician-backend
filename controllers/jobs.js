@@ -11,19 +11,20 @@ exports.addJob = async (req, res) => {
       status,
       timeline,
       note,
-      imageUrl,
+      imageUrls,
       responsibilities,
     } = req.body;
 
     // Basic validation
     if (!title || !apartment || !technician) {
+      connection.release();
       return res
         .status(400)
         .json({ message: "Job Title,Apartment and Technician fields are required" });
     }
 
     const insertQuery =
-      "INSERT INTO jobs (title,description, technician, apartment, status,timeline,note,imageUrl, responsibilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO jobs (title,description, technician, apartment, status,timeline,note,imageUrls, responsibilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     connection.query(
       insertQuery,
@@ -35,12 +36,13 @@ exports.addJob = async (req, res) => {
         status,
         timeline,
         note,
-        imageUrl,
+        imageUrls,
         JSON.stringify(responsibilities),
       ],
       (err, result) => {
         if (err) {
           console.error("Error creating job:", err);
+          connection.release();
           return res.status(500).json({ message: "Internal server error" });
         }
         // Get the inserted job ID
@@ -51,15 +53,16 @@ exports.addJob = async (req, res) => {
         connection.query(selectJobQuery, [jobId], (err, job) => {
           if (err) {
             console.error("Error fetching the job: ", err);
+            connection.release();
             return res
               .status(500)
               .json({ message: "Error fetching the job data" });
           }
-
+          connection.release();
           res
             .status(201)
             .json({ message: "Job created successfully", job: job[0] });
-          connection.release();
+
         });
       }
     );

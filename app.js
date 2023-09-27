@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(helmet());
 app.use(morgan('combined'));
+app.use('/uploads', express.static('uploads'));
+
 
 // Routes
 app.get('/', (req, res) => {
@@ -24,6 +26,7 @@ app.use('/api/technician', require('./routes/technician'));
 app.use('/api/job', require('./routes/job'));
 app.use('/api/apartment', require('./routes/apartment'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/upload', require('./routes/upload'));
 
 //404 error handling
 app.use((req, res, next) => {
