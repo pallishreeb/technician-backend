@@ -12,7 +12,17 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
-app.use(helmet());
+app.use(function(req, res, next) {
+  //let origin = ["*","http://localhost:3000"];
+  res.header("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,Referer, Accept,x-access-token,Authorization");
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
 app.use(morgan('combined'));
 app.use('/uploads', express.static('uploads'));
 

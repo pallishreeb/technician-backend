@@ -20,7 +20,13 @@ const upload = multer({ storage: storage });
 // API endpoint to handle file uploads and data insertion
 router.patch("/update-images", upload.array("images", 3), (req, res) => {
   const { jobId } = req.query;
-  const images = req.files.map((file) => file.filename).join(",");
+  // const images = req.files.map((file) => file.filename).join(",");
+  let images = []
+  if (req.files && req.files.length > 0) {
+    for (var i = 0; i < req.files.length; i++) {
+      images.push(req.files[i].filename)
+    }
+  }
   db.getConnection(function (err, connection) {
     // First, check if the job exists
     connection.query(
