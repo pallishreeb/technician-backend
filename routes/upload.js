@@ -4,7 +4,7 @@ const router = express.Router();
 const path = require("path");
 const fs = require("fs");
 const db = require("../db");
-
+const {isAuthenticated} = require("../middleware")
 const storage = multer.diskStorage({
   destination: "./uploads",
   filename: function (req, file, cb) {
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // API endpoint to handle file uploads and data insertion
-router.patch("/update-images", upload.array("images", 3), (req, res) => {
+router.patch("/update-images",isAuthenticated, upload.array("images", 3), (req, res) => {
   const { jobId } = req.query;
   // const images = req.files.map((file) => file.filename).join(",");
   let images = []
@@ -60,7 +60,7 @@ router.patch("/update-images", upload.array("images", 3), (req, res) => {
   });
 });
 // API endpoint to get images for a specific job
-router.get("/get-images", async (req, res) => {
+router.get("/get-images",isAuthenticated, async (req, res) => {
   const { jobId } = req.query;
   db.getConnection(function (err, connection) {
     // Fetch the image URLs for the job with the provided ID from your database
@@ -89,7 +89,7 @@ router.get("/get-images", async (req, res) => {
 });
 
 // API endpoint to delete an image for a specific job by jobId
-router.delete("/delete-image", async (req, res) => {
+router.delete("/delete-image",isAuthenticated, async (req, res) => {
   try {
     const { jobId, imageName } = req.query;
 

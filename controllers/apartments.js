@@ -6,6 +6,7 @@ exports.addApartment = async (req, res) => {
 
     // Basic validation
     if (!apartmentName || !location) {
+      connection.release();
       return res
         .status(400)
         .json({ message: "Apartment name and location are required" });
@@ -17,11 +18,12 @@ exports.addApartment = async (req, res) => {
     connection.query(insertQuery, [apartmentName, location], (err, result) => {
       if (err) {
         console.error("Error adding apartment:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
 
-      res.json({ message: "Apartment added successfully", result });
       connection.release();
+      res.json({ message: "Apartment added successfully", result });
     });
   });
 };
@@ -33,11 +35,11 @@ exports.getApartments = async (req, res) => {
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error fetching apartments:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
-
-      res.json(results);
       connection.release();
+      res.json(results);
     });
   });
 };
@@ -49,6 +51,7 @@ exports.updateApartment = async (req, res) => {
 
     // Basic validation
     if (!apartmentName || !location) {
+      connection.release();
       return res
         .status(400)
         .json({ message: "Apartment name and location are required" });
@@ -63,11 +66,12 @@ exports.updateApartment = async (req, res) => {
       (err, result) => {
         if (err) {
           console.error("Error updating apartment:", err);
+          connection.release();
           return res.status(500).json({ message: "Internal server error" });
         }
 
-        res.json({ message: "Apartment updated successfully", result });
         connection.release();
+        res.json({ message: "Apartment updated successfully", result });
       }
     );
   });
@@ -83,6 +87,7 @@ exports.removeApartment = async (req, res) => {
     connection.query(linkedQuery, [id], (err, results) => {
       if (err) {
         console.error("Error checking linked records:", err);
+        connection.release();
         return res
           .status(500)
           .json({ message: "Error checking linked records" });
@@ -92,7 +97,8 @@ exports.removeApartment = async (req, res) => {
 
         // If there are linked records, prevent deletion and send an error message
         if (linkedRecordCount > 0) {
-          res
+          connection.release();
+          return res
             .status(400)
             .json({
               message: "Cannot delete; record is linked in another table.",
@@ -101,11 +107,11 @@ exports.removeApartment = async (req, res) => {
           connection.query(deleteQuery, [id], (err, result) => {
             if (err) {
               console.error("Error deleting apartment:", err);
+              connection.release();
               return res.status(500).json({ message: "Internal server error" });
             }
-
-            res.json({ message: "Apartment deleted successfully", result });
             connection.release();
+            res.json({ message: "Apartment deleted successfully", result });
           });
         }
       }
@@ -118,6 +124,7 @@ exports.bulkDeleteApartments = async (req, res) => {
     const { ids } = req.body;
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      connection.release();
       return res.status(400).json({ message: "Invalid or empty IDs array" });
     }
 
@@ -126,11 +133,11 @@ exports.bulkDeleteApartments = async (req, res) => {
     connection.query(deleteQuery, [ids], (err, result) => {
       if (err) {
         console.error("Error bulk deleting apartments:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
-
-      res.json({ message: "Apartments bulk deleted successfully", result });
       connection.release();
+      res.json({ message: "Apartments bulk deleted successfully", result });
     });
   });
 };

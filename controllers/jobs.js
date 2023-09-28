@@ -88,12 +88,13 @@ exports.getJobs = async (req, res) => {
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error fetching jobs:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
 
       // console.log(results,"results------")
-      res.json(results);
       connection.release();
+      res.json(results);
     });
   });
 };
@@ -118,10 +119,12 @@ exports.updateJob = async (req, res) => {
     connection.query(getJobQuery, [id], (err, results) => {
       if (err) {
         console.error("Error fetching job data: ", err);
+        connection.release();
         return res.status(500).json({ message: "Error fetching job data" });
       }
 
       if (results.length === 0) {
+        connection.release();
         return res.status(404).json({ message: "Job not found" });
       }
 
@@ -152,11 +155,11 @@ exports.updateJob = async (req, res) => {
       connection.query(updateJobQuery, [updateFields, id], (err, result) => {
         if (err) {
           console.error("Error updating job:", err);
+          connection.release();
           return res.status(500).json({ message: "Internal server error" });
         }
-
-        res.json({ message: "Job updated successfully", result });
         connection.release();
+        res.json({ message: "Job updated successfully", result });
       });
     });
   });
@@ -171,11 +174,12 @@ exports.removeJob = async (req, res) => {
     connection.query(deleteQuery, [id], (err, result) => {
       if (err) {
         console.error("Error deleting job:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
-
-      res.json({ message: "Job deleted successfully", result });
       connection.release();
+      res.json({ message: "Job deleted successfully", result });
+
     });
   });
 };
@@ -185,6 +189,7 @@ exports.bulkDeleteJobs = async (req, res) => {
     const { ids } = req.body;
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      connection.release();
       return res.status(400).json({ message: "Invalid or empty IDs array" });
     }
 
@@ -193,11 +198,11 @@ exports.bulkDeleteJobs = async (req, res) => {
     connection.query(deleteQuery, [ids], (err, result) => {
       if (err) {
         console.error("Error bulk deleting jobs:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
-
-      res.json({ message: "Jobs bulk deleted successfully", result });
       connection.release();
+      res.json({ message: "Jobs bulk deleted successfully", result });
     });
   });
 };
@@ -217,6 +222,7 @@ exports.getJobFilter = async (req, res) => {
     connection.query(statisticsQuery, (err, result) => {
       if (err) {
         console.error("Error fetching job statistics:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
 
@@ -229,11 +235,12 @@ exports.getJobFilter = async (req, res) => {
           totalNoJobsPending: result[0].totalNoJobsPending,
           totalNoJobsUnassigned: result[0].totalNoJobsUnassigned,
         };
+        connection.release();
         res.json(statistics);
       } else {
+        connection.release();
         res.json({});
       }
-      connection.release();
     });
   });
 };
@@ -253,15 +260,16 @@ exports.updateStatus = async (req, res) => {
     connection.query(updateJobStatusQuery, [status, id], (err, results) => {
       if (err) {
         console.error("Error updating job status: ", err);
+        connection.release();
         return res.status(500).json({ message: "Error updating job status" });
       }
 
       if (results.affectedRows === 0) {
+        connection.release();
         return res.status(404).json({ message: "Job not found" });
       }
-
-      res.status(200).json({ message: "Job status updated successfully" });
       connection.release();
+      res.status(200).json({ message: "Job status updated successfully" });
     });
   });
 };
@@ -271,6 +279,7 @@ exports.filterJobByDate = async (req, res) => {
     const { date } = req.query;
 
     if (!date) {
+      connection.release();
       return res.status(400).json({ message: "Date parameter is required" });
     }
 
@@ -290,11 +299,11 @@ exports.filterJobByDate = async (req, res) => {
     connection.query(getJobsByDateQuery, [date], (err, results) => {
       if (err) {
         console.error("Error fetching jobs by date: ", err);
+        connection.release();
         return res.status(500).json({ message: "Error fetching jobs by date" });
       }
-
-      res.status(200).json(results);
       connection.release();
+      res.status(200).json(results);
     });
   });
 };
@@ -323,17 +332,18 @@ exports.jobDetail = async (req, res) => {
     connection.query(getJobByIdQuery, [id], (err, results) => {
       if (err) {
         console.error("Error fetching job by ID: ", err);
+        connection.release();
         return res.status(500).json({ message: "Error fetching job by ID" });
       }
 
       if (results.length === 0) {
+        connection.release();
         return res.status(404).json({ message: "Job not found" });
       }
 
       const job = results[0];
-
-      res.status(200).json(job);
       connection.release();
+      res.status(200).json(job);
     });
   });
 };
@@ -353,6 +363,7 @@ exports.timelineDates = async (req, res) => {
     connection.query(getTimelineDatesQuery,[month , year], (err, results) => {
       if (err) {
         console.error("Error fetching timeline dates: ", err);
+        connection.release();
         return res
           .status(500)
           .json({ message: "Error fetching timeline dates" });
@@ -360,9 +371,8 @@ exports.timelineDates = async (req, res) => {
 
       // Extract the timeline dates from the results
       const timelineDates = results.map((row) => row.timelineDate);
-
-      res.status(200).json(timelineDates);
       connection.release();
+      res.status(200).json(timelineDates);
     });
   });
 };

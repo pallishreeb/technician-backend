@@ -8,6 +8,7 @@ exports.registerAdmin = async (req, res) => {
 
     // Basic validation
     if (!email || !password) {
+      connection.release();
       return res
         .status(400)
         .json({ message: "Email and password are required" });
@@ -15,6 +16,7 @@ exports.registerAdmin = async (req, res) => {
     let adminQuery = "SELECT * FROM admin WHERE email=?";
     connection.query(adminQuery, [email], async (err, result) => {
       if (result.length > 0 && result[0].email == email) {
+        connection.release();
         return res
           .status(400)
           .json({ message: "Admin with this email already exist" });
@@ -28,11 +30,11 @@ exports.registerAdmin = async (req, res) => {
       connection.query(insertQuery, [email, hashedPassword], (err, result) => {
         if (err) {
           console.error("Error registering admin:", err);
+          connection.release();
           return res.status(500).json({ message: "Internal server error" });
         }
-
-        res.json({ message: "Admin registered successfully" });
         connection.release();
+        res.json({ message: "Admin registered successfully" });
       });
     });
   });
@@ -44,6 +46,7 @@ exports.loginAdmin = async (req, res) => {
 
     // Basic validation
     if (!email || !password) {
+      connection.release();
       return res
         .status(400)
         .json({ message: "Email and password are required" });
@@ -54,10 +57,12 @@ exports.loginAdmin = async (req, res) => {
     connection.query(selectQuery, [email], async (err, results) => {
       if (err) {
         console.error("Error logging in:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
 
       if (results.length === 0) {
+        connection.release();
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
@@ -67,6 +72,7 @@ exports.loginAdmin = async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, admin.password);
 
       if (!passwordMatch) {
+        connection.release();
         return res.status(401).json({ message: "Invalid email or password" });
       }
       // Create a JWT token
@@ -77,8 +83,8 @@ exports.loginAdmin = async (req, res) => {
           expiresIn: "2d", // Token expiration time (adjust as needed)
         }
       );
-      res.json({ message: "Admin logged in successfully", admin, token });
       connection.release();
+      res.json({ message: "Admin logged in successfully", admin, token });
     });
   });
 };
@@ -89,6 +95,7 @@ exports.resetPassword = async (req, res) => {
 
     // Basic validation
     if (!email || !password) {
+      connection.release();
       return res.status(400).json({ message: "All fields are required" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -97,11 +104,11 @@ exports.resetPassword = async (req, res) => {
     connection.query(updateQuery, [hashedPassword, email], (err, result) => {
       if (err) {
         console.error("Error Reseting password:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
-
-      res.json({ message: "Password updated successfully" });
       connection.release();
+      res.json({ message: "Password updated successfully" });
     });
   });
 };

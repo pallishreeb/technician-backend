@@ -6,12 +6,14 @@ exports.addTechnician = async (req, res) => {
 
     // Basic validation
     if (!name || !email || !password) {
+      connection.release();
       return res.status(400).json({ message: "All fields are required" });
     }
 
     let technicianQuery = "SELECT * FROM technicians WHERE email=?";
     connection.query(technicianQuery, [email], (err, result) => {
       if (result.length > 0 && result[0].email == email) {
+        connection.release();
         return res
           .status(400)
           .json({ message: "Technician with this email already exist" });
@@ -22,13 +24,15 @@ exports.addTechnician = async (req, res) => {
       connection.query(insertQuery, [name, email, password], (err, result) => {
         if (err) {
           console.error("Error inserting technician:", err);
+          connection.release();
           return res.status(500).json({ message: "Internal server error" });
         }
         console.log("Technician added:", result);
+        connection.release();
         res
           .status(201)
           .json({ message: "Technician added successfully", result });
-        connection.release();
+
       });
     });
   });
@@ -41,11 +45,11 @@ exports.getTechnicians = async (req, res) => {
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error fetching technicians:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
-
-      res.json(results);
       connection.release();
+      res.json(results);
     });
   });
 };
@@ -57,6 +61,7 @@ exports.updateTechnician = async (req, res) => {
 
     // Basic validation
     if (!name || !email || !password) {
+      connection.release();
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -69,11 +74,11 @@ exports.updateTechnician = async (req, res) => {
       (err, result) => {
         if (err) {
           console.error("Error updating technician:", err);
+          connection.release();
           return res.status(500).json({ message: "Internal server error" });
         }
-
-        res.json({ message: "Technician updated successfully", result });
         connection.release();
+        res.json({ message: "Technician updated successfully", result });
       }
     );
   });
@@ -89,6 +94,7 @@ exports.removeTechnician = async (req, res) => {
     connection.query(linkedQuery, [id], (err, results) => {
       if (err) {
         console.error("Error checking linked records:", err);
+        connection.release();
         return res
           .status(500)
           .json({ message: "Error checking linked records" });
@@ -98,6 +104,7 @@ exports.removeTechnician = async (req, res) => {
 
         // If there are linked records, prevent deletion and send an error message
         if (linkedRecordCount > 0) {
+          connection.release();
           res.status(400).json({
             message: "Cannot delete; record is linked in another table.",
           });
@@ -105,11 +112,11 @@ exports.removeTechnician = async (req, res) => {
           connection.query(deleteQuery, [id], (err, result) => {
             if (err) {
               console.error("Error deleting technician:", err);
+              connection.release();
               return res.status(500).json({ message: "Internal server error" });
             }
-
-            res.json({ message: "Technician deleted successfully", result });
             connection.release();
+            res.json({ message: "Technician deleted successfully", result });
           });
         }
       }
@@ -122,6 +129,7 @@ exports.bulkDeleteTechnicians = async (req, res) => {
     const { ids } = req.body;
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      connection.release();
       return res.status(400).json({ message: "Invalid or empty IDs array" });
     }
 
@@ -130,11 +138,11 @@ exports.bulkDeleteTechnicians = async (req, res) => {
     connection.query(deleteQuery, [ids], (err, result) => {
       if (err) {
         console.error("Error bulk deleting technicians:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
-
-      res.json({ message: "Technicians bulk deleted successfully", result });
       connection.release();
+      res.json({ message: "Technicians bulk deleted successfully", result });
     });
   });
 };
@@ -145,6 +153,7 @@ exports.loginTechnician = async (req, res) => {
 
     // Basic validation
     if (!email || !password) {
+      connection.release();
       return res
         .status(400)
         .json({ message: "Email and password are required" });
@@ -155,10 +164,12 @@ exports.loginTechnician = async (req, res) => {
     connection.query(selectQuery, [email], async (err, results) => {
       if (err) {
         console.error("Error logging in:", err);
+        connection.release();
         return res.status(500).json({ message: "Internal server error" });
       }
 
       if (results.length === 0) {
+        connection.release();
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
@@ -167,6 +178,7 @@ exports.loginTechnician = async (req, res) => {
       // Compare the provided password with the  password in the database
 
       if (password !== technician.password) {
+        connection.release();
         return res.status(401).json({ message: "Invalid email or password" });
       }
       // Create a JWT token
@@ -177,13 +189,12 @@ exports.loginTechnician = async (req, res) => {
           expiresIn: "2d", // Token expiration time (adjust as needed)
         }
       );
-
+      connection.release();
       res.json({
         message: "Technician logged in successfully",
         technician,
         token,
       });
-      connection.release();
     });
   });
 };
@@ -194,6 +205,7 @@ exports.technicianJobs = async (req,res) =>{
 
   // Basic input validation
   if (!technicianId || isNaN(technicianId)) {
+    connection.release();
     return res.status(400).json({ error: 'Invalid technicianId' });
   }
 
@@ -209,10 +221,11 @@ exports.technicianJobs = async (req,res) =>{
   db.query(query, [technicianId], (err, results) => {
     if (err) {
       console.error('Database error: ' + err);
+      connection.release();
       return res.status(500).json({ error: 'Database error' });
     }
-    res.json(results);
     connection.release();
+    res.json(results);
   });
 })
 }
@@ -231,6 +244,7 @@ exports.technicianTimelineDates = async (req, res) => {
     connection.query(getTimelineDatesQuery,[month , year,technicianId], (err, results) => {
       if (err) {
         console.error("Error fetching timeline dates: ", err);
+        connection.release();
         return res
           .status(500)
           .json({ message: "Error fetching timeline dates" });
@@ -238,9 +252,8 @@ exports.technicianTimelineDates = async (req, res) => {
 
       // Extract the timeline dates from the results
       const timelineDates = results.map((row) => row.timelineDate);
-
-      res.status(200).json(timelineDates);
       connection.release();
+      res.status(200).json(timelineDates);
     });
   });
 };
