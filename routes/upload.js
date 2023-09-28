@@ -52,7 +52,7 @@ router.patch("/update-images",isAuthenticated, upload.array("images", 3), (req, 
           [JSON.stringify(newImageUrls), jobId],
           (err, results) => {
             connection.release();
-            res.status(200).json({ message: "Images updated successfully" });
+            res.status(200).json({ message: "Images updated successfully",newImageUrls });
           }
         );
       }
