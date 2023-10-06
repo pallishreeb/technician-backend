@@ -10,6 +10,7 @@ exports.addJob = async (req, res) => {
       apartment,
       status,
       timeline,
+      duetime,
       note,
       imageUrls,
       responsibilities,
@@ -24,7 +25,7 @@ exports.addJob = async (req, res) => {
     }
 
     const insertQuery =
-      "INSERT INTO jobs (title,description, technician, apartment, status,timeline,note,imageUrls, responsibilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO jobs (title,description, technician, apartment, status,timeline,duetime,note,imageUrls, responsibilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     connection.query(
       insertQuery,
@@ -35,6 +36,7 @@ exports.addJob = async (req, res) => {
         apartment,
         status,
         timeline,
+        duetime,
         note,
         imageUrls,
         JSON.stringify(responsibilities),
@@ -109,6 +111,7 @@ exports.updateJob = async (req, res) => {
       apartment,
       status,
       timeline,
+      duetime,
       note,
       imageUrl,
       responsibilities,
@@ -136,6 +139,7 @@ exports.updateJob = async (req, res) => {
         apartment,
         status,
         timeline,
+        duetime,
         note,
         imageUrl,
         responsibilities: JSON.stringify(responsibilities),
