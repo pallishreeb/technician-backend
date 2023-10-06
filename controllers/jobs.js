@@ -213,15 +213,26 @@ exports.bulkDeleteJobs = async (req, res) => {
 
 exports.getJobFilter = async (req, res) => {
   db.getConnection(function (err, connection) {
-    const statisticsQuery = `
-    SELECT
-      COUNT(*) AS totalNoJobs,
-      SUM(CASE WHEN status = 'assigned' THEN 1 ELSE 0 END) AS totalNoJobsAssigned,
-      SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS totalNoJobsCompleted,
-      SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS totalNoJobsPending,
-      SUM(CASE WHEN status = 'not assigned' THEN 1 ELSE 0 END) AS totalNoJobsUnassigned
-    FROM jobs
-  `;
+  //   const statisticsQuery = `
+  //   SELECT
+  //     COUNT(*) AS totalNoJobs,
+  //     SUM(CASE WHEN status = 'assigned' THEN 1 ELSE 0 END) AS totalNoJobsAssigned,
+  //     SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS totalNoJobsCompleted,
+  //     SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS totalNoJobsPending,
+  //     SUM(CASE WHEN status = 'not assigned' THEN 1 ELSE 0 END) AS totalNoJobsUnassigned
+  //   FROM jobs
+  // `;
+
+  const statisticsQuery = `
+  SELECT
+    COUNT(*) AS totalNoJobs,
+    SUM(CASE WHEN status IN ('Assigned', 'Inprogress', 'Rescheduled') THEN 1 ELSE 0 END) AS totalNoJobsAssigned,
+    SUM(CASE WHEN status = 'Completed' THEN 1 ELSE 0 END) AS totalNoJobsCompleted,
+    SUM(CASE WHEN status = 'Inprogress' THEN 1 ELSE 0 END) AS totalNoJobsPending,
+    SUM(CASE WHEN status = 'Cancelled' THEN 1 ELSE 0 END) AS totalNoJobsCancelled,
+    SUM(CASE WHEN status = 'Unscheduled' THEN 1 ELSE 0 END) AS totalNoJobsUnassigned
+  FROM jobs
+`;
 
     connection.query(statisticsQuery, (err, result) => {
       if (err) {
@@ -237,6 +248,7 @@ exports.getJobFilter = async (req, res) => {
           totalNoJobsAssigned: result[0].totalNoJobsAssigned,
           totalNoJobsCompleted: result[0].totalNoJobsCompleted,
           totalNoJobsPending: result[0].totalNoJobsPending,
+          totalNoJobsCancelled:result[0].totalNoJobsCancelled,
           totalNoJobsUnassigned: result[0].totalNoJobsUnassigned,
         };
         connection.release();
