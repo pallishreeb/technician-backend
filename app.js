@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const helmet = require('helmet');
 const morgan = require('morgan');
 const env = require('dotenv');
 env.config();
@@ -20,12 +19,9 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
   next();
 });
-app.use(helmet({
-  crossOriginResourcePolicy: false,
-}));
+
 app.use(morgan('combined'));
 app.use('/uploads', express.static('uploads'));
-
 
 // Routes
 app.get('/', (req, res) => {

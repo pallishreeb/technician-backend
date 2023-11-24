@@ -12,7 +12,6 @@ exports.addJob = async (req, res) => {
       timeline,
       duetime,
       note,
-      imageUrls,
       responsibilities,
     } = req.body;
 
@@ -25,7 +24,7 @@ exports.addJob = async (req, res) => {
     }
 
     const insertQuery =
-      "INSERT INTO jobs (title,description, technician, apartment, status,timeline,duetime,note,imageUrls, responsibilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO jobs (title,description, technician, apartment, status,timeline,duetime,note,responsibilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     connection.query(
       insertQuery,
@@ -38,8 +37,7 @@ exports.addJob = async (req, res) => {
         timeline,
         duetime,
         note,
-        imageUrls,
-        JSON.stringify(responsibilities),
+        responsibilities.join(','),
       ],
       (err, result) => {
         if (err) {
@@ -113,7 +111,6 @@ exports.updateJob = async (req, res) => {
       timeline,
       duetime,
       note,
-      imageUrl,
       responsibilities,
     } = req.body;
     // Get the existing job data from the database
@@ -131,6 +128,9 @@ exports.updateJob = async (req, res) => {
         return res.status(404).json({ message: "Job not found" });
       }
 
+      const updatedResponsibilities = responsibilities
+  .map(responsibility => responsibility.trim()) // Trim each responsibility
+  .filter(Boolean); // Remove empty responsibilities
       // const existingJobData = results[0];
       const updatedJobData = {
         title,
@@ -141,8 +141,7 @@ exports.updateJob = async (req, res) => {
         timeline,
         duetime,
         note,
-        imageUrl,
-        responsibilities: JSON.stringify(responsibilities),
+        responsibilities: updatedResponsibilities.join(','),
       };
       // Generate the SQL UPDATE query based on the provided fields
       const updateFields = {};

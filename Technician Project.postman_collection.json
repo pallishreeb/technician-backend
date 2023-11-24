@@ -1,0 +1,873 @@
+{
+	"info": {
+		"_postman_id": "531d14f7-c7b4-4063-a6e3-91a17b57f8dc",
+		"name": "Technician Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29496726"
+	},
+	"item": [
+		{
+			"name": "jobs",
+			"item": [
+				{
+					"name": "get-all-jobs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTUzMjMzMTMsImV4cCI6MTY5NTQ5NjExM30._GP74wFLqh71rwuRodrJt4E7mBVVhTxw2DXvNVkyY4g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/job",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "timeline-dates",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/job/timeline-dates",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job",
+								"timeline-dates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "analytics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/job/analytics",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job",
+								"analytics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTUzMjMzMTMsImV4cCI6MTY5NTQ5NjExM30._GP74wFLqh71rwuRodrJt4E7mBVVhTxw2DXvNVkyY4g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Job task three\",\n    \"description\": \"description for job\",\n    \"apartment\": 1,\n    \"technician\": 1,\n    \"status\": \"Assigned\",\n    \"timeline\": \"14-09-2023\",\n    \"responsibilities\":[\"responsibilities 1\", \"responsibilities 2\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/job",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-job",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\":\"Job task new\",\n    \"responsibilities\":[\"responsibilities 1\", \"responsibilities 2\"],\n     \"timeline\":\"13-09-2023\"\n     \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/job?id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-job",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\":\"Job task two\",\n    \"apartment\":1,\n    \"technician\":1,\n    \"status\":\"Assigned\",\n    \"timeline\":\"12/09/2023\"\n     \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/job?id=2",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\":\"Completed\"\n     \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/job/update-status?id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job",
+								"update-status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "job-detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTUzMjMzMTMsImV4cCI6MTY5NTQ5NjExM30._GP74wFLqh71rwuRodrJt4E7mBVVhTxw2DXvNVkyY4g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/job/job-detail?id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job",
+								"job-detail"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter-by-date",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/job/filter-by-date?date=12/09/2023",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job",
+								"filter-by-date"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "12/09/2023"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-job-bulk",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\":[3,4]\n     \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/job/bulk-delete",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"job",
+								"bulk-delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "technicians",
+			"item": [
+				{
+					"name": "get-all-technicians",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ4NDIyMjMsImV4cCI6MTY5NTAxNTAyM30.rPLDhwcsyicFM_Iw_MxPO-bOlN8sP8brVRtlH3Bj8ys",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/technician",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"technician"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-technician",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ4NDIyMjMsImV4cCI6MTY5NTAxNTAyM30.rPLDhwcsyicFM_Iw_MxPO-bOlN8sP8brVRtlH3Bj8ys",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"john Doe\",\n    \"email\":\"john1@gmail.com\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/technician",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"technician"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginTechnician",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"alen3@gmail.com\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/technician/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"technician",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-technician",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ4NDIyMjMsImV4cCI6MTY5NTAxNTAyM30.rPLDhwcsyicFM_Iw_MxPO-bOlN8sP8brVRtlH3Bj8ys",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Alen Das\",\n    \"email\":\"alen4@gmail.com\",\n    \"password\":\"1234567\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/technician",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"technician"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-technician",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ4NDIyMjMsImV4cCI6MTY5NTAxNTAyM30.rPLDhwcsyicFM_Iw_MxPO-bOlN8sP8brVRtlH3Bj8ys",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Alen Das\",\n    \"email\":\"alen@gmail.com\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/technician?id=18",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"technician"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "18"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-technician-inbulk",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\":[3,6,7]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/technician/bulk-delete",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"technician",
+								"bulk-delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "technician-jobs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTUzMjMzMTMsImV4cCI6MTY5NTQ5NjExM30._GP74wFLqh71rwuRodrJt4E7mBVVhTxw2DXvNVkyY4g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/technician/myjobs?technicianId=1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"technician",
+								"myjobs"
+							],
+							"query": [
+								{
+									"key": "technicianId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "technician-dates",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTUzMjMzMTMsImV4cCI6MTY5NTQ5NjExM30._GP74wFLqh71rwuRodrJt4E7mBVVhTxw2DXvNVkyY4g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/technician/mydates?technicianId=1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"technician",
+								"mydates"
+							],
+							"query": [
+								{
+									"key": "technicianId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "apartments",
+			"item": [
+				{
+					"name": "get-all-apartments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ4NDIyMjMsImV4cCI6MTY5NTAxNTAyM30.rPLDhwcsyicFM_Iw_MxPO-bOlN8sP8brVRtlH3Bj8ys",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/apartment",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"apartment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-apartment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ4NDIyMjMsImV4cCI6MTY5NTAxNTAyM30.rPLDhwcsyicFM_Iw_MxPO-bOlN8sP8brVRtlH3Bj8ys",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"apartmentName\":\"apartment two \",\n     \"location\":\"street 1, near abcd, 764129,abcds\"\n   \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/apartment",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"apartment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-apartment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ4NDIyMjMsImV4cCI6MTY5NTAxNTAyM30.rPLDhwcsyicFM_Iw_MxPO-bOlN8sP8brVRtlH3Bj8ys",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"apartmentName\":\"apartment2 \",\n     \"location\":\"street 2, near abcde, 764129,abcds\"\n   \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/apartment?id=2",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"apartment"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-apartment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ4NDIyMjMsImV4cCI6MTY5NTAxNTAyM30.rPLDhwcsyicFM_Iw_MxPO-bOlN8sP8brVRtlH3Bj8ys",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/apartment?id=3",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"apartment"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bulk-delete-apartments",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE2OTQ1ODg4MzIsImV4cCI6MTY5NDc2MTYzMn0.K3sURgqPEoRGwcNcUuxf1ua_xY_IjjUEAl8wxpnUYbs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\":[3]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/apartment/bulk-delete",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"apartment",
+								"bulk-delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "register-admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@gmail.com\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/admin",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@gmail.com\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/admin/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@gmail.com\",\n    \"password\":\"1234567\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/admin/reset-password",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"admin",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
