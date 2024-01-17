@@ -23,16 +23,24 @@ app.use(function(req, res, next) {
 app.use(morgan('combined'));
 app.use('/uploads', express.static('uploads'));
 
+app.use(express.static('build')); // Assuming your React build is in a directory named 'build'
+
 // Routes
-app.get('/', (req, res) => {
-    res.send('Welcome to Technician admin panel!');
-  });
+app.get('/api', (req, res) => {
+  res.send('Welcome to Technician admin panel!');
+});
   
 app.use('/api/technician', require('./routes/technician')); 
 app.use('/api/job', require('./routes/job'));
 app.use('/api/apartment', require('./routes/apartment'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/upload', require('./routes/upload'));
+
+// Catch-all route for React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 
 //404 error handling
 app.use((req, res, next) => {
