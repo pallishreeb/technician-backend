@@ -214,7 +214,8 @@ exports.technicianJobs = async (req,res) =>{
     SELECT jobs.*, technicians.name, technicians.email
     FROM jobs
     INNER JOIN technicians ON jobs.technician = technicians.id
-    WHERE jobs.technician = ?
+    WHERE jobs.technician = ? 
+    ORDER BY priority DESC, createdAt DESC
   `;
 
   // Execute the query

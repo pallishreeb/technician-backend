@@ -3,7 +3,7 @@ const db = require("../db");
 // Route to create a job
 exports.addJob = async (req, res) => {
   db.getConnection(function (err, connection) {
-    const {
+    let {
       title,
       description,
       technician,
@@ -13,6 +13,7 @@ exports.addJob = async (req, res) => {
       duetime,
       note,
       responsibilities,
+      priority,
     } = req.body;
 
     // Basic validation
@@ -24,8 +25,8 @@ exports.addJob = async (req, res) => {
     }
 
     const insertQuery =
-      "INSERT INTO jobs (title,description, technician, apartment, status,timeline,duetime,note,responsibilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+      "INSERT INTO jobs (title,description, technician, apartment, status,timeline,duetime,note,responsibilities,priority) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    priority = priority ? priority : 0;
     connection.query(
       insertQuery,
       [
@@ -38,6 +39,7 @@ exports.addJob = async (req, res) => {
         duetime,
         note,
         responsibilities.join(','),
+        priority,
       ],
       (err, result) => {
         if (err) {
@@ -82,7 +84,7 @@ exports.getJobs = async (req, res) => {
     FROM jobs
     LEFT JOIN technicians ON jobs.technician = technicians.id
     LEFT JOIN apartments ON jobs.apartment = apartments.id
-    ORDER BY createdAt DESC
+    ORDER BY priority DESC, createdAt DESC
   `;
 
     connection.query(query, (err, results) => {
@@ -112,6 +114,7 @@ exports.updateJob = async (req, res) => {
       duetime,
       note,
       responsibilities,
+      priority,
     } = req.body;
     // Get the existing job data from the database
     const getJobQuery = "SELECT * FROM jobs WHERE id = ?";
@@ -128,8 +131,7 @@ exports.updateJob = async (req, res) => {
         return res.status(404).json({ message: "Job not found" });
       }
 
-      const updatedResponsibilities = responsibilities
-  .map(responsibility => responsibility.trim()) // Trim each responsibility
+      const updatedResponsibilities = responsibilities?.map(responsibility => responsibility.trim()) // Trim each responsibility
   .filter(Boolean); // Remove empty responsibilities
       // const existingJobData = results[0];
       const updatedJobData = {
@@ -141,7 +143,8 @@ exports.updateJob = async (req, res) => {
         timeline,
         duetime,
         note,
-        responsibilities: updatedResponsibilities.join(','),
+        responsibilities: updatedResponsibilities?.join(','),
+        priority,
       };
       // Generate the SQL UPDATE query based on the provided fields
       const updateFields = {};
